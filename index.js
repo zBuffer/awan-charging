@@ -91,24 +91,24 @@ exports.chargeRequestMemcached = async function (input) {
     await checkDelay(input);
     // old code not using cas
     // remainingBalance = await chargeMemcached(KEY, charges, cas);
-        const result = await chargeCasMemcached(KEY, remainingBalance - charges, cas);
-        if (!result) {
-            // value written during operation, we could retry but we choose to abort for now
-            // (for ease of testing)
-            return {
-                remainingBalance,
-                isAuthorized: false,
-                charges: 0,
-            };
-        }
-
-        console.log('chargeCasMemcached:', result);
-        remainingBalance -= charges;
+    const result = await chargeCasMemcached(KEY, remainingBalance - charges, cas);
+    if (!result) {
+        // value written during operation, we could retry but we choose to abort for now
+        // (for ease of testing)
         return {
             remainingBalance,
-            charges,
-            isAuthorized,
+            isAuthorized: false,
+            charges: 0,
         };
+    }
+
+    console.log('chargeCasMemcached:', result);
+    remainingBalance -= charges;
+    return {
+        remainingBalance,
+        charges,
+        isAuthorized,
+    };
 };
 // used to exaggerate race conditions by intentionally delaying execution
 async function checkDelay(input) {
@@ -170,7 +170,7 @@ async function disconnectRedis(client) {
                 reject("unknown error closing redis connection.");
             }
         });
-    }); 
+    });
 }
 function authorizeRequest(remainingBalance, charges) {
     return remainingBalance >= charges;

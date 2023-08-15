@@ -290,7 +290,7 @@ async function pingRedis() {
     } catch {}
 }
 
-// post charge operation to memcache endpoint
+// post charge operation to redis endpoint
 async function postChargeRedis(unit, delay) {
     return throwOnError(await sa
     .post(`${BASEURL_REDIS}${ENDPOINT_CHARGE_REDIS}`)
@@ -301,7 +301,7 @@ async function postChargeRedis(unit, delay) {
     }));
 }
 
-// post reset balance to memcache endpoint
+// post reset balance to redis endpoint
 async function postResetRedis() {
     return await sa.post(`${BASEURL_REDIS}${ENDPOINT_RESET_REDIS}`);
 }
