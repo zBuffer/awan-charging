@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "test": "mocha --exit test/test.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "superagent": "^8.1.0",
+    "mocha": "^10.2.0"
+  }
+}
